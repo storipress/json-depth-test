@@ -5,7 +5,7 @@ on:
 
 jobs:
   postgres:
-    name: PostgreSQL
+    name: PostgreSQL ${{ matrix.version }}
 
     runs-on: ubuntu-latest
 
@@ -23,6 +23,8 @@ jobs:
           POSTGRES_DB: depth
           POSTGRES_USER: depth
           POSTGRES_PASSWORD: depth
+        ports:
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@v3
