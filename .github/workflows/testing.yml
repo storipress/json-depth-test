@@ -42,3 +42,81 @@ jobs:
         run: php artisan test
         env:
           DB_CONNECTION: pgsql
+
+  mysql:
+    name: MySQL ${{ matrix.version }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        version: ['8', '5']
+
+    services:
+      mysql:
+        image: mysql:${{ matrix.version }}
+
+        env:
+          MYSQL_DATABASE: depth
+          MYSQL_USER: depth
+          MYSQL_PASSWORD: depth
+        ports:
+          - 3306:3306
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, fileinfo, mbstring, xdebug
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run tests
+        run: php artisan test
+        env:
+          DB_CONNECTION: mysql
+
+  mariadb:
+    name: MariaDB ${{ matrix.version }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        version: ['11.0', '10.11', '10.10', '10.9', '10.8', '10.7', '10.6', '10.5', '10.4']
+
+    services:
+      mariadb:
+        image: mariadb:${{ matrix.version }}
+
+        env:
+          MARIADB_DATABASE: depth
+          MARIADB_USER: depth
+          MARIADB_PASSWORD: depth
+        ports:
+          - 3306:3306
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, fileinfo, mbstring, xdebug
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run tests
+        run: php artisan test
+        env:
+          DB_CONNECTION: mysql
