@@ -1,0 +1,39 @@
+name: Testing
+
+on:
+  postgres:
+    name: PostgreSQL
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        version: ['15', '14', '13']
+
+    services:
+      postgres:
+        image: postgres:${{ matrix.version }}
+
+        env:
+          POSTGRES_DB: depth
+          POSTGRES_USER: depth
+          POSTGRES_PASSWORD: depth
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, fileinfo, mbstring, xdebug
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run tests
+        run: php artisan test
+        env:
+          DB_CONNECTION: pgsql
