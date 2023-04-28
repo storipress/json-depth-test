@@ -62,10 +62,10 @@ jobs:
           MYSQL_DATABASE: depth
           MYSQL_USER: depth
           MYSQL_PASSWORD: depth
+          MYSQL_ROOT_PASSWORD: depth
 
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
       - uses: actions/checkout@v3
@@ -103,10 +103,10 @@ jobs:
           MARIADB_DATABASE: depth
           MARIADB_USER: depth
           MARIADB_PASSWORD: depth
+          MARIADB_ROOT_PASSWORD: depth
 
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
       - uses: actions/checkout@v3
